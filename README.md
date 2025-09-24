@@ -1,2 +1,2 @@
 # project2026
-This rrepisotory is for my project files
+This repisotory is for my project files
