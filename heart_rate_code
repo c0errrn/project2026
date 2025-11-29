@@ -1,0 +1,23 @@
+data = readmatrix('pulse_data1.csv');
+frames = data(:,1);
+signal = data(:,2);
+
+fps = 30; % <frame rate
+t = frames / fps;
+
+% high-pass filter to remove slow drift:
+signal_filt = detrend(signal);
+
+% FFT to find heart rate
+N = length(signal_filt);
+Y = fft(signal_filt);
+f = (0:N-1)*(fps/N);
+
+% limit search to pulse frequencies (0.7–3 Hz)
+freq_range = f(f>=0.7 & f<=3);
+fft_range = abs(Y(f>=0.7 & f<=3));
+
+[~,idx] = max(fft_range);
+heart_rate_bpm = freq_range(idx) * 60;
+
+disp(heart_rate_bpm)
